@@ -1,6 +1,6 @@
-# Todo App
+# Task App
 
-This is a simple todo app built with FastAPI and PostgreSQL.
+This is a simple task app built with FastAPI and PostgreSQL.
 
 
 ## Setup

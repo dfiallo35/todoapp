@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "RUN",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "fastapi",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceRoot}",
+            "python": "${workspaceRoot}/.venv/bin/python",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+
+            },
+            "args": [
+                "dev",
+            ],
+            "jinja": true,
+            "justMyCode": false,
+        }
+    ]
+}
