@@ -26,6 +26,14 @@ class BaseRepository(IBaseRepository):
             query = query.limit(filter_schema.limit)
         if filter_schema.offset:
             query = query.offset(filter_schema.offset)
+        if filter_schema.order_by:
+            order_field = filter_schema.order_by
+            desc = order_field.startswith("-")
+            field_name = order_field.lstrip("-")
+
+            column = getattr(self.table_class, field_name, None)
+            if column is not None:
+                query = query.order_by(column.desc() if desc else column.asc())
         return query
 
     async def create(self, entity: BaseEntity) -> BaseEntity:
