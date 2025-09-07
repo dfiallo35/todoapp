@@ -6,7 +6,6 @@ GET http://localhost:8000/health
 GET http://localhost:8000/tasks?page=0&size=3&order_by=created_at
 
 
-
 ### CREATE task
 POST http://localhost:8000/tasks
 Content-Type: application/json
@@ -14,4 +13,21 @@ Content-Type: application/json
 {
     "title": "Task 3",
     "description": "Task 3 description"
+}
+
+
+### GET task
+GET http://localhost:8000/tasks/2aa42f2f-79e1-4a29-bba0-6dc2d76c0dcb
+
+
+### DELETE task
+DELETE http://localhost:8000/tasks/2aa42f2f-79e1-4a29-bba0-6dc2d76c0dcc
+
+
+### UPDATE task
+PUT http://localhost:8000/tasks/08158174-286b-45d3-8b97-ced53baa5ec4
+Content-Type: application/json
+
+{
+    "title": "Task 5"
 }

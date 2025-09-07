@@ -9,6 +9,15 @@ class BaseEntity(BaseModel):
     updated_at: datetime | None = None
 
 
+class BaseUpdateSchema(BaseModel):
+    pass
+
+
 class Task(BaseEntity):
     title: str
+    description: str | None = None
+
+
+class TaskUpdateSchema(BaseUpdateSchema):
+    title: str | None = None
     description: str | None = None

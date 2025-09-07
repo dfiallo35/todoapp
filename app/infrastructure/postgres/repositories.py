@@ -5,6 +5,7 @@ from app.infrastructure.postgres.db import DbConnection
 from app.domain.repositories import IBaseRepository
 from app.domain.repositories import ITaskRepository
 from app.domain.models import BaseEntity
+from app.domain.models import BaseUpdateSchema
 from app.domain.filters import BaseFilter
 from app.domain.filters import TaskFilter
 from app.infrastructure.postgres.tables import BaseTable
@@ -53,6 +54,28 @@ class BaseRepository(IBaseRepository):
                 await self.mapper_class().to_entity(table_entity)
                 for table_entity in result.scalars().all()
             ]
+
+    async def delete(self, entity: BaseEntity) -> None:
+        async with self.db_connection.get_session() as session:
+            table_entity = await session.get(self.table_class, entity.id)
+            if table_entity is None:
+                return
+            await session.delete(table_entity)
+            await session.commit()
+
+    async def update(
+        self, entity: BaseEntity, update_schema: BaseUpdateSchema
+    ) -> BaseEntity:
+        async with self.db_connection.get_session() as session:
+            table_entity = await session.get(self.table_class, entity.id)
+            if table_entity is None:
+                return
+
+            for key, value in update_schema.model_dump(exclude_unset=True).items():
+                setattr(table_entity, key, value)
+            await session.commit()
+            await session.refresh(table_entity)
+            return await self.mapper_class().to_entity(table_entity)
 
 
 class TaskRepository(ITaskRepository, BaseRepository):

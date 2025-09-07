@@ -4,6 +4,7 @@ from abc import abstractmethod
 
 from app.domain.models import BaseEntity
 from app.domain.models import Task
+from app.domain.models import TaskUpdateSchema
 
 
 class BaseInput(BaseModel):
@@ -14,6 +15,10 @@ class BaseOutput(BaseModel):
     pass
 
 
+class BaseUpdateInput(BaseInput):
+    pass
+
+
 class TaskInput(BaseInput):
     title: str
     description: str | None = None
@@ -21,6 +26,11 @@ class TaskInput(BaseInput):
 
 class TaskOutput(BaseOutput):
     title: str
+    description: str | None = None
+
+
+class TaskUpdateInput(BaseUpdateInput):
+    title: str | None = None
     description: str | None = None
 
 
@@ -40,3 +50,6 @@ class TaskMapper(BaseMapper):
 
     async def to_api(self, entity: Task) -> TaskOutput:
         return TaskOutput(**entity.model_dump())
+
+    async def to_update_entity(self, serilizer: TaskUpdateInput) -> TaskUpdateSchema:
+        return TaskUpdateSchema(**serilizer.model_dump(exclude_unset=True))
