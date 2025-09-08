@@ -4,14 +4,18 @@ from sqlalchemy.sql import Select
 from app.infrastructure.postgres.db import DbConnection
 from app.domain.repositories import IBaseRepository
 from app.domain.repositories import ITaskRepository
+from app.domain.repositories import IUserRepository
 from app.domain.models import BaseEntity
 from app.domain.models import BaseUpdateSchema
 from app.domain.filters import BaseFilter
 from app.domain.filters import TaskFilter
+from app.domain.filters import UserFilter
 from app.infrastructure.postgres.tables import BaseTable
 from app.infrastructure.postgres.tables import TaskTable
+from app.infrastructure.postgres.tables import UserTable
 from app.infrastructure.postgres.mappers import BaseMapper
 from app.infrastructure.postgres.mappers import TaskMapper
+from app.infrastructure.postgres.mappers import UserMapper
 
 
 class BaseRepository(IBaseRepository):
@@ -27,6 +31,8 @@ class BaseRepository(IBaseRepository):
             query = query.limit(filter_schema.limit)
         if filter_schema.offset:
             query = query.offset(filter_schema.offset)
+        if filter_schema.entity_id_eq:
+            query = query.where(self.table_class.id == filter_schema.entity_id_eq)
         if filter_schema.order_by:
             order_field = filter_schema.order_by
             desc = order_field.startswith("-")
@@ -83,9 +89,22 @@ class TaskRepository(ITaskRepository, BaseRepository):
     mapper_class: TaskMapper = TaskMapper
 
     async def filter(self, filter_schema: TaskFilter, query: Select) -> Select:
-        query = await super().filter(filter_schema, query)
+        query = await super().filter(filter_schema=filter_schema, query=query)
 
-        if filter_schema.entity_id_eq:
-            query = query.where(self.table_class.id == filter_schema.entity_id_eq)
+        if filter_schema.user_id_eq:
+            query = query.where(self.table_class.user_id == filter_schema.user_id_eq)
+
+        return query
+
+
+class UserRepository(IUserRepository, BaseRepository):
+    table_class: UserTable = UserTable
+    mapper_class: UserMapper = UserMapper
+
+    async def filter(self, filter_schema: UserFilter, query: Select) -> Select:
+        query = await super().filter(filter_schema=filter_schema, query=query)
+
+        if filter_schema.username_eq:
+            query = query.where(self.table_class.username == filter_schema.username_eq)
 
         return query

@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Query
+from fastapi import Depends
 from typing import Annotated
 
 from app.presentation.serializers import TaskInput
@@ -10,56 +11,57 @@ from app.application.services import TaskListService
 from app.application.services import TaskUpdateService
 from app.presentation.serializers import TaskMapper
 from app.domain.filters import TaskFilter
+from app.presentation.security import get_current_user
 
-router = APIRouter()
+task_router = APIRouter()
 
 
-@router.get("/health")
+@task_router.get("/health")
 async def health():
     return {"status": "ok"}
 
 
-@router.post("/tasks")
-async def create_task(
-    task_input: TaskInput,
-):
+@task_router.post("/tasks")
+async def create_task(task_input: TaskInput, user_id: str = Depends(get_current_user)):
     mapper = TaskMapper()
-    task_service = TaskCreateService()
+    task_create_service = TaskCreateService()
 
-    task = await mapper.to_entity(task_input)
-    task = await task_service(task)
+    task = await mapper.to_entity(task_input, user_id)
+    task = await task_create_service(task)
     return await mapper.to_api(task)
 
 
-@router.get("/tasks")
+@task_router.get("/tasks")
 async def list_task(
     filter_schema: Annotated[TaskFilter, Query()],
+    user_id: str = Depends(get_current_user),
 ):
     mapper = TaskMapper()
-    task_service = TaskListService()
+    task_list_service = TaskListService()
 
-    tasks = await task_service(filter_schema)
+    filter_schema.user_id_eq = user_id
+    tasks = await task_list_service(filter_schema)
     return [await mapper.to_api(Task) for Task in tasks]
 
 
-@router.get("/tasks/{id}")
-async def get_task(id: str):
+@task_router.get("/tasks/{id}")
+async def get_task(id: str, user_id: str = Depends(get_current_user)):
     mapper = TaskMapper()
     task_service = TaskListService()
 
-    tasks = await task_service(TaskFilter(entity_id_eq=id))
+    tasks = await task_service(TaskFilter(entity_id_eq=id, user_id_eq=user_id))
     if not tasks:
         raise ValueError(f"Task with id {id} not found")
     task = tasks[0]
     return await mapper.to_api(task)
 
 
-@router.delete("/tasks/{id}")
-async def delete_task(id: str):
+@task_router.delete("/tasks/{id}")
+async def delete_task(id: str, user_id: str = Depends(get_current_user)):
     task_list_service = TaskListService()
     task_delete_service = TaskDeleteService()
 
-    tasks = await task_list_service(TaskFilter(entity_id_eq=id))
+    tasks = await task_list_service(TaskFilter(entity_id_eq=id, user_id_eq=user_id))
     if not tasks:
         raise ValueError(f"Task with id {id} not found")
     task = tasks[0]
@@ -67,14 +69,16 @@ async def delete_task(id: str):
     return {"status": "ok"}
 
 
-@router.put("/tasks/{id}")
-async def update_task(id: str, task_update: TaskUpdateInput):
+@task_router.put("/tasks/{id}")
+async def update_task(
+    id: str, task_update: TaskUpdateInput, user_id: str = Depends(get_current_user)
+):
     mapper = TaskMapper()
     task_list_service = TaskListService()
     task_update_service = TaskUpdateService()
 
     entity_update = await mapper.to_update_entity(task_update)
-    tasks = await task_list_service(TaskFilter(entity_id_eq=id))
+    tasks = await task_list_service(TaskFilter(entity_id_eq=id, user_id_eq=user_id))
     if not tasks:
         raise ValueError(f"Task with id {id} not found")
     task = tasks[0]

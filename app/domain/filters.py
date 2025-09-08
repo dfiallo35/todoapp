@@ -17,4 +17,8 @@ class BaseFilter(BaseModel):
 
 
 class TaskFilter(BaseFilter):
-    pass
+    user_id_eq: str | None = None
+
+
+class UserFilter(BaseFilter):
+    username_eq: str | None = None

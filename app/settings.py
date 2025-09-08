@@ -3,13 +3,18 @@ from inject import Binder
 from pydantic_settings import BaseSettings
 
 from app.infrastructure.postgres.repositories import TaskRepository
+from app.infrastructure.postgres.repositories import UserRepository
 from app.domain.repositories import ITaskRepository
+from app.domain.repositories import IUserRepository
 from app.infrastructure.postgres.db import DbConnection
 
 
 class Settings(BaseSettings):
     DEPENDENCIES: dict
     DATABASE_URL: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    SECRET_KEY: str = "supersecret"
+    ALGORITHM: str = "HS256"
 
     db_connection: DbConnection | None = None
 
@@ -28,6 +33,7 @@ class Settings(BaseSettings):
 
 DEPENDENCIES = {
     ITaskRepository: TaskRepository,
+    IUserRepository: UserRepository,
 }
 
 settings = Settings(DEPENDENCIES=DEPENDENCIES)

@@ -45,8 +45,8 @@ class BaseMapper(ABC):
 
 
 class TaskMapper(BaseMapper):
-    async def to_entity(self, serilizer: TaskInput) -> Task:
-        return Task(**serilizer.model_dump())
+    async def to_entity(self, serilizer: TaskInput, user_id: str) -> Task:
+        return Task(**serilizer.model_dump(), user_id=user_id)
 
     async def to_api(self, entity: Task) -> TaskOutput:
         return TaskOutput(**entity.model_dump())

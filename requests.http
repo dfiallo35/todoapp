@@ -4,11 +4,13 @@ GET http://localhost:8000/health
 
 ### LIST tasks
 GET http://localhost:8000/tasks?page=0&size=3&order_by=created_at
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOGYwN2YyZS00NDBjLTRhZDMtOGRmNi0wOTYzMjVhNTUwN2YiLCJleHAiOjE3NTczMDczMTJ9.GaW_-SsVRzRSgKL6Em8PFW4J6eWLgc0pMveu0V6c46w
 
 
 ### CREATE task
 POST http://localhost:8000/tasks
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOGYwN2YyZS00NDBjLTRhZDMtOGRmNi0wOTYzMjVhNTUwN2YiLCJleHAiOjE3NTczMDY1MDJ9.VOUrRhzhv8ZZB6A1y1z99a3K_6LREirKVCI-EOZic4g
 
 {
     "title": "Task 3",
@@ -30,4 +32,24 @@ Content-Type: application/json
 
 {
     "title": "Task 5"
+}
+
+
+### Signup
+POST http://localhost:8000/auth/signup
+Content-Type: application/json
+
+{
+    "username": "test2",
+    "password": "test"
+}
+
+
+### Login
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "test"
 }

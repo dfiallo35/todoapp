@@ -5,11 +5,14 @@ import inject
 from app.domain.models import BaseEntity
 from app.domain.models import BaseUpdateSchema
 from app.domain.models import Task
+from app.domain.models import User
 from app.domain.models import TaskUpdateSchema
 from app.domain.repositories import IBaseRepository
 from app.domain.repositories import ITaskRepository
+from app.domain.repositories import IUserRepository
 from app.domain.filters import BaseFilter
 from app.domain.filters import TaskFilter
+from app.domain.filters import UserFilter
 
 
 class BaseService(ABC):
@@ -71,3 +74,17 @@ class TaskUpdateService(BaseUpdateService):
 
     async def execute(self, entity: Task, update_schema: TaskUpdateSchema):
         return await super().execute(entity=entity, update_schema=update_schema)
+
+
+class UserCreateService(BaseCreateService):
+    repo_instance: IUserRepository = inject.attr(IUserRepository)
+
+    async def execute(self, entity: User):
+        return await super().execute(entity=entity)
+
+
+class UserListService(BaseListService):
+    repo_instance: IUserRepository = inject.attr(IUserRepository)
+
+    async def execute(self, filter_schema: UserFilter):
+        return await super().execute(filter_schema=filter_schema)

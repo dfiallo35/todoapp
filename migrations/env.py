@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from logging.config import fileConfig
 
 import os
@@ -12,6 +13,7 @@ from alembic import context
 config = context.config
 
 
+load_dotenv()
 config.set_main_option("sqlalchemy.url", os.environ.get("DATABASE_URL"))
 
 # Interpret the config file for Python logging.

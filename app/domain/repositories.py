@@ -17,3 +17,7 @@ class IBaseRepository(ABC):
 
 class ITaskRepository(IBaseRepository):
     pass
+
+
+class IUserRepository(IBaseRepository):
+    pass
