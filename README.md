@@ -1,7 +1,14 @@
 # Task App
 
-This is a simple task app built with FastAPI and PostgreSQL.
+This is a simple task management application built with FastAPI and PostgreSQL. It follows a 4-layer architecture (Presentation, Application, Domain, and Infrastructure) to ensure clean separation of concerns and maintainable code.
 
+Key features include:
+- CRUD operations for tasks: create, read, update, and delete tasks.
+- User authentication with JWT tokens for secure access.
+- iltering, pagination, and sorting on task lists.
+- Async database operations using SQLAlchemy with asyncpg for high performance.
+- Dependency injection for decoupled services and repositories.
+- Dockerized development environment with Postgres for easy setup and reproducibility.
 
 ## Setup
 
@@ -11,11 +18,15 @@ This is a simple task app built with FastAPI and PostgreSQL.
 
 ```dotenv
 DATABASE_URL=postgresql+asyncpg://postgres:postgrespassword@localhost:5440/todoapp
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+ALGORITHM=HS256
+SECRET_KEY=<supersecret>
 ```
 
-4. Install [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/) then run `docker-compose -f docker-compose-dev.yml up -d` to start the database.
-5. Intall [alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html#install-alembic)then run the migrations with `uv run alembic upgrade head`.
-6. Run the app with `uv run fastapi dev`.
+4. Create the secrets key with `openssl rand -hex 64` and replace `<supersecret>` with the output.
+5. Install [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/) then run `docker-compose -f docker-compose-dev.yml up -d` to start the database.
+6. Intall [alembic](https://alembic.sqlalchemy.org/en/latest/tutorial.html#install-alembic)then run the migrations with `uv run alembic upgrade head`.
+7. Run the app with `uv run fastapi dev`.
 
 
 ## Pre-Commit

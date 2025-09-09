@@ -1,7 +1,3 @@
-### Health
-GET http://localhost:8000/health
-
-
 ### LIST tasks
 GET http://localhost:8000/tasks?page=0&size=3&order_by=created_at
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OWFjOTIzMC1hMjkxLTQ0NGItYmVkOC05ZWJlMGM2ZWQwZDgiLCJleHAiOjE3NTczOTAyNjZ9.PKEdiHC8q3dYNeDKUd4EJWjYMlbBK48eMGr10dGQnCc

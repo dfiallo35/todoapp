@@ -12,9 +12,9 @@ from app.infrastructure.postgres.db import DbConnection
 class Settings(BaseSettings):
     DEPENDENCIES: dict
     DATABASE_URL: str
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    SECRET_KEY: str = "supersecret"
-    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+    SECRET_KEY: str
+    ALGORITHM: str
 
     db_connection: DbConnection | None = None
 
