@@ -29,6 +29,7 @@ class TaskTable(BaseTable):
     title = Column(String(255), nullable=False)
     description = Column(String(255), nullable=True)
     user_id = Column(UUID(as_uuid=True), ForeignKey("user.id"), nullable=False)
+    status = Column(String(100), nullable=False)
 
     user = relationship("UserTable", back_populates="tasks")
 

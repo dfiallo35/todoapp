@@ -1,9 +1,11 @@
 from pydantic import BaseModel
 from abc import ABC
 from abc import abstractmethod
+from datetime import datetime
 
 from app.domain.models import BaseEntity
 from app.domain.models import Task
+from app.domain.models import TaskStatusEnum
 from app.domain.models import TaskUpdateSchema
 
 
@@ -22,16 +24,21 @@ class BaseUpdateInput(BaseInput):
 class TaskInput(BaseInput):
     title: str
     description: str | None = None
+    status: TaskStatusEnum = TaskStatusEnum.PENDING
 
 
 class TaskOutput(BaseOutput):
+    id: str
     title: str
     description: str | None = None
+    status: TaskStatusEnum
+    created_at: datetime
 
 
 class TaskUpdateInput(BaseUpdateInput):
     title: str | None = None
     description: str | None = None
+    status: TaskStatusEnum | None = None
 
 
 class BaseMapper(ABC):

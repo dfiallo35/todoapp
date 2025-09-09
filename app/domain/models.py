@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import BaseModel
 from datetime import datetime
 from pydantic import field_validator
@@ -19,9 +20,15 @@ class BaseUpdateSchema(BaseModel):
     pass
 
 
+class TaskStatusEnum(Enum):
+    PENDING = "PENDING"
+    COMPLETED = "COMPLETED"
+
+
 class Task(BaseEntity):
     title: str
     description: str | None = None
+    status: TaskStatusEnum = TaskStatusEnum.PENDING
 
     user_id: str
 

@@ -4,6 +4,7 @@ from fastapi import Depends
 from typing import Annotated
 
 from app.presentation.serializers import TaskInput
+from app.presentation.serializers import TaskOutput
 from app.presentation.serializers import TaskUpdateInput
 from app.application.services import TaskCreateService
 from app.application.services import TaskDeleteService
@@ -13,15 +14,11 @@ from app.presentation.serializers import TaskMapper
 from app.domain.filters import TaskFilter
 from app.presentation.security import get_current_user
 
-task_router = APIRouter()
+
+task_router = APIRouter(prefix="/tasks")
 
 
-@task_router.get("/health")
-async def health():
-    return {"status": "ok"}
-
-
-@task_router.post("/tasks")
+@task_router.post("/", response_model=TaskOutput)
 async def create_task(task_input: TaskInput, user_id: str = Depends(get_current_user)):
     mapper = TaskMapper()
     task_create_service = TaskCreateService()
@@ -31,7 +28,7 @@ async def create_task(task_input: TaskInput, user_id: str = Depends(get_current_
     return await mapper.to_api(task)
 
 
-@task_router.get("/tasks")
+@task_router.get("/", response_model=list[TaskOutput])
 async def list_task(
     filter_schema: Annotated[TaskFilter, Query()],
     user_id: str = Depends(get_current_user),
@@ -44,7 +41,7 @@ async def list_task(
     return [await mapper.to_api(Task) for Task in tasks]
 
 
-@task_router.get("/tasks/{id}")
+@task_router.get("/{id}", response_model=TaskOutput)
 async def get_task(id: str, user_id: str = Depends(get_current_user)):
     mapper = TaskMapper()
     task_service = TaskListService()
@@ -56,7 +53,7 @@ async def get_task(id: str, user_id: str = Depends(get_current_user)):
     return await mapper.to_api(task)
 
 
-@task_router.delete("/tasks/{id}")
+@task_router.delete("/{id}")
 async def delete_task(id: str, user_id: str = Depends(get_current_user)):
     task_list_service = TaskListService()
     task_delete_service = TaskDeleteService()
@@ -69,7 +66,7 @@ async def delete_task(id: str, user_id: str = Depends(get_current_user)):
     return {"status": "ok"}
 
 
-@task_router.put("/tasks/{id}")
+@task_router.put("/{id}", response_model=TaskOutput)
 async def update_task(
     id: str, task_update: TaskUpdateInput, user_id: str = Depends(get_current_user)
 ):
