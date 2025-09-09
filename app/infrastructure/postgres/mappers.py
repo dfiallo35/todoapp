@@ -28,10 +28,13 @@ class TaskMapper(BaseMapper):
             title=table_entity.title,
             description=table_entity.description,
             user_id=table_entity.user_id,
+            status=table_entity.status,
         )
 
     async def to_table(self, entity: Task) -> TaskTable:
-        return TaskTable(**entity.model_dump())
+        return TaskTable(
+            **entity.model_dump(exclude={"status"}), status=entity.status.value
+        )
 
 
 class UserMapper(BaseMapper):

@@ -4,34 +4,38 @@ GET http://localhost:8000/health
 
 ### LIST tasks
 GET http://localhost:8000/tasks?page=0&size=3&order_by=created_at
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOGYwN2YyZS00NDBjLTRhZDMtOGRmNi0wOTYzMjVhNTUwN2YiLCJleHAiOjE3NTczMDczMTJ9.GaW_-SsVRzRSgKL6Em8PFW4J6eWLgc0pMveu0V6c46w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OWFjOTIzMC1hMjkxLTQ0NGItYmVkOC05ZWJlMGM2ZWQwZDgiLCJleHAiOjE3NTczOTAyNjZ9.PKEdiHC8q3dYNeDKUd4EJWjYMlbBK48eMGr10dGQnCc
 
 
 ### CREATE task
 POST http://localhost:8000/tasks
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOGYwN2YyZS00NDBjLTRhZDMtOGRmNi0wOTYzMjVhNTUwN2YiLCJleHAiOjE3NTczMDY1MDJ9.VOUrRhzhv8ZZB6A1y1z99a3K_6LREirKVCI-EOZic4g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OWFjOTIzMC1hMjkxLTQ0NGItYmVkOC05ZWJlMGM2ZWQwZDgiLCJleHAiOjE3NTczOTAyNjZ9.PKEdiHC8q3dYNeDKUd4EJWjYMlbBK48eMGr10dGQnCc
 
 {
-    "title": "Task 3",
-    "description": "Task 3 description"
+    "title": "Task 1",
+    "description": "Task 1 description",
+    "status": "PENDING"
 }
 
 
 ### GET task
-GET http://localhost:8000/tasks/2aa42f2f-79e1-4a29-bba0-6dc2d76c0dcb
+GET http://localhost:8000/tasks/59dc56d4-2ab3-41d8-95f7-4d724b19bd59
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OWFjOTIzMC1hMjkxLTQ0NGItYmVkOC05ZWJlMGM2ZWQwZDgiLCJleHAiOjE3NTczOTAyNjZ9.PKEdiHC8q3dYNeDKUd4EJWjYMlbBK48eMGr10dGQnCc
 
 
 ### DELETE task
-DELETE http://localhost:8000/tasks/2aa42f2f-79e1-4a29-bba0-6dc2d76c0dcc
+DELETE http://localhost:8000/tasks/84a2b21c-f314-4404-92cc-b2fabe203129
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OWFjOTIzMC1hMjkxLTQ0NGItYmVkOC05ZWJlMGM2ZWQwZDgiLCJleHAiOjE3NTczOTAyNjZ9.PKEdiHC8q3dYNeDKUd4EJWjYMlbBK48eMGr10dGQnCc
 
 
 ### UPDATE task
-PUT http://localhost:8000/tasks/08158174-286b-45d3-8b97-ced53baa5ec4
+PUT http://localhost:8000/tasks/59dc56d4-2ab3-41d8-95f7-4d724b19bd59
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OWFjOTIzMC1hMjkxLTQ0NGItYmVkOC05ZWJlMGM2ZWQwZDgiLCJleHAiOjE3NTczOTAyNjZ9.PKEdiHC8q3dYNeDKUd4EJWjYMlbBK48eMGr10dGQnCc
 Content-Type: application/json
 
 {
-    "title": "Task 5"
+    "title": "Task update"
 }
 
 
@@ -40,7 +44,7 @@ POST http://localhost:8000/auth/signup
 Content-Type: application/json
 
 {
-    "username": "test2",
+    "username": "test",
     "password": "test"
 }
 
